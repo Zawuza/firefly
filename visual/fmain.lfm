@@ -1,0 +1,57 @@
+object FireflyView: TFireflyView
+  Left = 1042
+  Height = 600
+  Top = 195
+  Width = 570
+  Caption = 'Firefly algorithm'
+  ClientHeight = 600
+  ClientWidth = 570
+  Color = clWhite
+  OnCreate = FormCreate
+  OnResize = FormResize
+  OnShow = FormShow
+  LCLVersion = '1.8.4.0'
+  WindowState = wsMaximized
+  object Panel1: TPanel
+    Left = 0
+    Height = 50
+    Top = 550
+    Width = 570
+    Align = alBottom
+    ClientHeight = 50
+    ClientWidth = 570
+    Color = cl3DLight
+    ParentColor = False
+    TabOrder = 0
+    object Button1: TButton
+      Left = 439
+      Height = 33
+      Top = 8
+      Width = 99
+      Anchors = [akTop, akRight]
+      Caption = 'Button1'
+      TabOrder = 0
+    end
+  end
+  object DrawGrid1: TDrawGrid
+    Left = 16
+    Height = 500
+    Top = 16
+    Width = 500
+    AutoFillColumns = True
+    BorderStyle = bsNone
+    ExtendedSelect = False
+    FixedCols = 0
+    FixedRows = 0
+    ScrollBars = ssNone
+    TabOrder = 1
+    OnDrawCell = DrawGrid1DrawCell
+    ColWidths = (
+      100
+      100
+      100
+      100
+      100
+    )
+  end
+end
