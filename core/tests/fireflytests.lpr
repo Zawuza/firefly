@@ -9,7 +9,7 @@ uses
   baustellenproblem,
   jsonproblemparser,
   jsonproblemparsertestcase,
-  baustellenprobelmtestcase;
+  baustellenprobelmtestcase, fireflyalgorithm;
 
 {$R *.res}
 
