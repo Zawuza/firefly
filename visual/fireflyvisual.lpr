@@ -9,7 +9,11 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   fMain,
   fireflyvm,
   { you can add units after this }
-  SysUtils;
+  SysUtils,
+  logger,
+  baustellenproblem,
+  jsonproblemparser,
+  fireflyalgorithm;
 
 {$R *.res}
 
@@ -22,4 +26,3 @@ begin
     Application.Run;
   end;
 end.
-

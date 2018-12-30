@@ -26,6 +26,7 @@ type
     Button1: TButton;
     DrawGrid1: TDrawGrid;
     Panel1: TPanel;
+    procedure Button1Click(Sender: TObject);
     procedure DrawGrid1DrawCell(Sender: TObject; aCol, aRow: integer;
       aRect: TRect; aState: TGridDrawState);
     procedure FormResize(Sender: TObject);
@@ -61,7 +62,10 @@ var
   TextStyle: TTextStyle;
 begin
   //Fill cell
-  DrawGrid1.Canvas.Brush.Color := cl3DLight;
+  if (UpperCase(FGrid[aRow][aCol]) <> FGrid[aRow][aCol]) or (FGrid[aRow][aCol] = '') then
+    DrawGrid1.Canvas.Brush.Color := cl3DLight
+  else
+    DrawGrid1.Canvas.Brush.Color := clSkyBlue;
   DrawGrid1.Canvas.FillRect(aRect);
   DrawGrid1.Canvas.Rectangle(aRect);
 
@@ -72,6 +76,11 @@ begin
   DrawGrid1.Canvas.TextStyle := TextStyle;
   DrawGrid1.Canvas.TextRect(aRect, aRect.Left,
     aRect.Top, FGrid[aRow][aCol]);
+end;
+
+procedure TFireflyView.Button1Click(Sender: TObject);
+begin
+  FVM.Step;
 end;
 
 procedure TFireflyView.FormCreate(Sender: TObject);
@@ -87,7 +96,6 @@ end;
 procedure TFireflyView.Notify(AMsg: string);
 var
   LRowHeight: integer;
-  i, j: integer;
 begin
   //Get size of grid
   DrawGrid1.ColCount := FVM.GetN;

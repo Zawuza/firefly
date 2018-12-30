@@ -35,6 +35,7 @@ type
 
   IAgent = interface
     function t(F: TFeld; i, j: integer): double;
+    function GetLabel: string;
   end;
 
   TBaufirma = TFPGList<IAgent>;
@@ -49,30 +50,35 @@ type
 
   THandwerker = class(TInterfacedObject, IAgent)
     function t(F: TFeld; i, j: integer): double;
+    function GetLabel: string;
   end;
 
   { TVerkehrsspezialist }
 
   TVerkehrsspezialist = class(TInterfacedObject, IAgent)
     function t(F: TFeld; i, j: integer): double;
+    function GetLabel: string;
   end;
 
   { TLandschaftsarchitekt }
 
   TLandschaftsarchitekt = class(TInterfacedObject, IAgent)
     function t(F: TFeld; i, j: integer): double;
+    function GetLabel: string;
   end;
 
   { TElektriker }
 
   TElektriker = class(TInterfacedObject, IAgent)
     function t(F: TFeld; i, j: integer): double;
+    function GetLabel: string;
   end;
 
   { TWerkstudent }
 
   TWerkstudent = class(TInterfacedObject, IAgent)
     function t(F: TFeld; i, j: integer): double;
+    function GetLabel: string;
   end;
 
   { TBaustellenProblem }
@@ -104,11 +110,21 @@ begin
   Result := -(i + j);
 end;
 
+function TWerkstudent.GetLabel: string;
+begin
+  Result := 'werkstudent';
+end;
+
 { TElektriker }
 
 function TElektriker.t(F: TFeld; i, j: integer): double;
 begin
   Result := TDistance.Manhattan(F, i, j, atHaus);
+end;
+
+function TElektriker.GetLabel: string;
+begin
+  Result := 'elektriker';
 end;
 
 { TLandschaftsarchitekt }
@@ -124,6 +140,11 @@ begin
   Result := -1 * Result;
 end;
 
+function TLandschaftsarchitekt.GetLabel: string;
+begin
+  Result := 'landschaftsarchitekt';
+end;
+
 { TVerkehrsspezialist }
 
 function TVerkehrsspezialist.t(F: TFeld; i, j: integer): double;
@@ -131,11 +152,21 @@ begin
   Result := TDistance.Manhattan(F, i, j, atBahnhof);
 end;
 
+function TVerkehrsspezialist.GetLabel: string;
+begin
+  Result := 'verkehrsspezialist';
+end;
+
 { THandwerker }
 
 function THandwerker.t(F: TFeld; i, j: integer): double;
 begin
   Result := TDistance.Manhattan(F, i, j, atImbiss);
+end;
+
+function THandwerker.GetLabel: string;
+begin
+  Result := 'Handwerker';
 end;
 
 { TDistance }

@@ -20,7 +20,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value=".\..\core\tests\testdata\problem.json"/>
+        <CommandLineParams Value=".\..\probleminstances\problem1.json"/>
       </local>
     </RunParams>
     <RequiredPackages Count="1">
@@ -28,7 +28,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="fireflyvisual.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -45,6 +45,10 @@
         <Filename Value="fireflyvm.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="logger.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
