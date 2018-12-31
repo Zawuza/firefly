@@ -48,11 +48,11 @@ object FireflyView: TFireflyView
     TabOrder = 1
     OnDrawCell = DrawGrid1DrawCell
     ColWidths = (
-      96
-      96
-      96
-      96
-      99
+      100
+      100
+      100
+      100
+      100
     )
   end
 end

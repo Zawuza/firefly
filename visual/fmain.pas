@@ -62,7 +62,7 @@ var
   TextStyle: TTextStyle;
 begin
   //Fill cell
-  if (UpperCase(FGrid[aRow][aCol]) <> FGrid[aRow][aCol]) or (FGrid[aRow][aCol] = '') then
+  if (UpperCase(FGrid[aRow][aCol]) = FGrid[aRow][aCol]) or (FGrid[aRow][aCol] = '') then
     DrawGrid1.Canvas.Brush.Color := cl3DLight
   else
     DrawGrid1.Canvas.Brush.Color := clSkyBlue;

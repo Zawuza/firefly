@@ -1,14 +1,16 @@
 {
-    "m": 3,
-    "n": 3,
+    "m": 15,
+    "n": 15,
     "anlagen": [
         {
             "typ": "atImbiss",
-            "i": 0,
-            "j": 2
+            "i": 14,
+            "j": 0
         }
     ],
     "agenten": [
+        "Werkstudent",
+        "Werkstudent",
         "Handwerker",
         "Handwerker"
     ]

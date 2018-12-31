@@ -65,13 +65,13 @@ begin
     for j := 0 to FProblem.F.n - 1 do
     begin
       if FProblem.F.Cells[i, j] = atBahnhof then
-        LRow.Add('BAHNHOF');
+        LRow.Add('Bahnhof');
       if FProblem.F.Cells[i, j] = atImbiss then
-        LRow.Add('IMBISS');
+        LRow.Add('Imbiss');
       if FProblem.F.Cells[i, j] = at0 then
         LRow.Add('');
       if FProblem.F.Cells[i, j] = atHaus then
-        LRow.Add('HAUS');
+        LRow.Add('Haus');
     end;
     Result.Add(LRow);
   end;

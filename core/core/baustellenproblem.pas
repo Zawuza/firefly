@@ -112,7 +112,7 @@ end;
 
 function TWerkstudent.GetLabel: string;
 begin
-  Result := 'werkstudent';
+  Result := 'W';
 end;
 
 { TElektriker }
@@ -124,7 +124,7 @@ end;
 
 function TElektriker.GetLabel: string;
 begin
-  Result := 'elektriker';
+  Result := 'E';
 end;
 
 { TLandschaftsarchitekt }
@@ -142,7 +142,7 @@ end;
 
 function TLandschaftsarchitekt.GetLabel: string;
 begin
-  Result := 'landschaftsarchitekt';
+  Result := 'L';
 end;
 
 { TVerkehrsspezialist }
@@ -154,7 +154,7 @@ end;
 
 function TVerkehrsspezialist.GetLabel: string;
 begin
-  Result := 'verkehrsspezialist';
+  Result := 'V';
 end;
 
 { THandwerker }
@@ -166,7 +166,7 @@ end;
 
 function THandwerker.GetLabel: string;
 begin
-  Result := 'Handwerker';
+  Result := 'H';
 end;
 
 { TDistance }

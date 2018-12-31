@@ -29,13 +29,15 @@ type
 
   TFireflyAlgorithm = class
   private
+    FStage2: integer;
     FProblem: TBaustellenProblem;
     FPositionen: TPositionList;
-    procedure MoveAToB(AIndexOfA: integer; AIndexOfB: integer);
+    procedure MoveAToB(AIndexOfA: integer; AIndexOfB: integer;
+      AStopOnMidDist: boolean = False);
     procedure MoveRandomly(AIndex: integer);
     function OneHasParetoDominatedSolutionOverTwo(AAgentIndex1,
       AAGentIndex2: integer): boolean;
-    procedure MoveAllTwoStepsCloser;
+    procedure MoveAllCloser;
     function CheckBounds(i, j: integer): boolean;
     function ManhattanDistanz(i1, j1, i2, j2: integer): integer;
   public
@@ -50,7 +52,8 @@ implementation
 
 { TFireflyAlgorithm }
 
-procedure TFireflyAlgorithm.MoveAToB(AIndexOfA: integer; AIndexOfB: integer);
+procedure TFireflyAlgorithm.MoveAToB(AIndexOfA: integer; AIndexOfB: integer;
+  AStopOnMidDist: boolean = False);
 var
   LPositionOfA, LPositionOfB: TAgentPosition;
   LBestMove: TNeighbours;
@@ -104,6 +107,9 @@ begin
       LBestMove := nBottom;
     end;
   end;
+
+  if (LMinDistance < 2) and AStopOnMidDist then
+    exit;
 
   //Movement
   case LBestMove of
@@ -183,6 +189,10 @@ begin
         LDirections[j] := LDirection;
       end;
 
+  //for i := 0 to 3 do
+  //  Log('Direction: ' + integer(LDirections[i]).ToString() + ', Value: ' +
+  //    LValues[i].ToString());
+
   repeat
     LRandomGennumber := Random(8);
     case LRandomGennumber of
@@ -191,8 +201,10 @@ begin
       5..6: LIndex := 2;
       7: LIndex := 3;
     end;
-    LFinalDirection:= Integer(LDirections[LIndex]);
+    LFinalDirection := integer(LDirections[LIndex]);
   until LValues[LIndex] < Infinity;
+
+  Log('Selected direction: ' + IntToStr(LFinalDirection));
 
   case LFinalDirection of
     0:
@@ -241,21 +253,21 @@ begin
   end;
 end;
 
-procedure TFireflyAlgorithm.MoveAllTwoStepsCloser;
+procedure TFireflyAlgorithm.MoveAllCloser;
 var
   i, j: integer;
 begin
   for i := 0 to FPositionen.Count - 1 do
     for j := 0 to FPositionen.Count - 1 do
     begin
-      MoveAToB(i, j);
-      MoveAToB(i, j);
+      MoveAToB(i, j, True);
     end;
 end;
 
 function TFireflyAlgorithm.CheckBounds(i, j: integer): boolean;
 begin
-  Result := (i >= 0) and (i < FProblem.F.m) and (j >= 0) and (j < FProblem.F.n);
+  Result := (i >= 0) and (i < FProblem.F.m) and (j >= 0) and
+    (j < FProblem.F.n) and (FProblem.F.Cells[i, j] = at0);
 end;
 
 function TFireflyAlgorithm.ManhattanDistanz(i1, j1, i2, j2: integer): integer;
@@ -283,6 +295,7 @@ begin
     until FProblem.F.Cells[LPosition.I, LPosition.J] = at0;
     FPositionen.Add(LPosition);
   end;
+  FStage2 := 0;
 end;
 
 constructor TFireflyAlgorithm.Create(AProblem: TBaustellenProblem;
@@ -290,6 +303,7 @@ constructor TFireflyAlgorithm.Create(AProblem: TBaustellenProblem;
 begin
   FProblem := AProblem;
   FPositionen := APositionen;
+  FStage2 := 0;
 end;
 
 procedure TFireflyAlgorithm.Step;
@@ -297,28 +311,35 @@ var
   i, j: integer;
   LSomeoneMovedUsingLight: boolean;
 begin
-  LSomeoneMovedUsingLight := False;
-  for i := 0 to FPositionen.Count - 1 do
-    for j := 0 to FPositionen.Count - 1 do
-      if OneHasParetoDominatedSolutionOverTwo(j, i) then
-      begin
-        MoveAToB(i, j);
-        LSomeoneMovedUsingLight := True;
-        Log(i.ToString() + ' firefly moved to ' + FPositionen[i].I.ToString() +
-          ',' + FPositionen[i].J.ToString() + ' using light from ' + j.ToString());
-      end
-      else
-      begin
-        MoveRandomly(i);
-        Log(i.ToString() + ' firefly moved to ' + FPositionen[i].I.ToString() +
-          ',' + FPositionen[i].J.ToString() + ' randomly');
-      end;
-  if not LSomeoneMovedUsingLight then
-    MoveAllTwoStepsCloser;
-  for i := 0 to FPositionen.Count - 1 do
-    if (FPositionen[i].I >= FProblem.F.m) or (FPositionen[i].J >= FProblem.F.n) or
-      (FPositionen[i].I < 0) or (FPositionen[i].J < 0) then
-      Sleep(0);
+  if FStage2 < 5 then
+  begin
+    LSomeoneMovedUsingLight := False;
+    for i := 0 to FPositionen.Count - 1 do
+      for j := 0 to FPositionen.Count - 1 do
+        if OneHasParetoDominatedSolutionOverTwo(j, i) then
+        begin
+          MoveAToB(i, j);
+          LSomeoneMovedUsingLight := True;
+          Log(i.ToString() + ' firefly moved to ' + FPositionen[i].I.ToString() +
+            ',' + FPositionen[i].J.ToString() + ' using light from ' + j.ToString());
+        end
+        else
+        begin
+          MoveRandomly(i);
+          Log(i.ToString() + ' firefly moved to ' + FPositionen[i].I.ToString() +
+            ',' + FPositionen[i].J.ToString() + ' randomly');
+        end;
+    if not LSomeoneMovedUsingLight then
+    begin
+      Inc(FStage2);
+      LOG('NO ONE MOVED USING LIGHT');
+    end;
+  end
+  else
+  begin
+    MoveAllCloser;
+    Log('EVERYONE MOVED');
+  end;
 end;
 
 destructor TFireflyAlgorithm.Destroy;
