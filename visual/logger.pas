@@ -25,7 +25,7 @@ initialization
 
 finalization
 
-  LStrList.SaveToFile('log.log');
+  //LStrList.SaveToFile('log.log');
   FreeAndNil(LStrList);
 
 end.

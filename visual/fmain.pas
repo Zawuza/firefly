@@ -24,9 +24,12 @@ type
 
   TFireflyView = class(TForm, INotifiable)
     Button1: TButton;
+    Button2: TButton;
     DrawGrid1: TDrawGrid;
     Panel1: TPanel;
+    SchrittText: TStaticText;
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure DrawGrid1DrawCell(Sender: TObject; aCol, aRow: integer;
       aRect: TRect; aState: TGridDrawState);
     procedure FormResize(Sender: TObject);
@@ -35,6 +38,10 @@ type
   private
     FVM: TFireflyViewModel;
     FGrid: TListGrid;
+    FSchritteCount: integer;
+    FParetoOptimals: TCoordinatesList;
+    procedure IncSchritteCount;
+    function IsPareto(i, j: integer): boolean;
   public
     procedure Notify(AMsg: string);
   end;
@@ -63,7 +70,10 @@ var
 begin
   //Fill cell
   if (UpperCase(FGrid[aRow][aCol]) = FGrid[aRow][aCol]) or (FGrid[aRow][aCol] = '') then
-    DrawGrid1.Canvas.Brush.Color := cl3DLight
+    if IsPareto(aRow, aCol) then
+      DrawGrid1.Canvas.Brush.Color := clWhite
+    else
+      DrawGrid1.Canvas.Brush.Color := cl3DLight
   else
     DrawGrid1.Canvas.Brush.Color := clSkyBlue;
   DrawGrid1.Canvas.FillRect(aRect);
@@ -81,16 +91,46 @@ end;
 procedure TFireflyView.Button1Click(Sender: TObject);
 begin
   FVM.Step;
+  IncSchritteCount;
+end;
+
+procedure TFireflyView.Button2Click(Sender: TObject);
+begin
+  FParetoOptimals := FVM.CalcParetoOptimum;
+  Self.Notify(MSG_PLEASE_UPDATE_GUI);
 end;
 
 procedure TFireflyView.FormCreate(Sender: TObject);
 begin
   FVM := TFireflyViewModel.Create(ParamStr(1), Self);
+  FSchritteCount := 0;
 end;
 
 procedure TFireflyView.FormShow(Sender: TObject);
 begin
   Self.Notify(MSG_PLEASE_UPDATE_GUI);
+end;
+
+procedure TFireflyView.IncSchritteCount;
+begin
+  FSchritteCount := FSchritteCount + 1;
+  SchrittText.Caption := 'Schritte: ' + FSchritteCount.ToString();
+end;
+
+function TFireflyView.IsPareto(i, j: integer): boolean;
+var
+  k: integer;
+  LCoord: TCoordinates;
+begin
+  if not Assigned(FParetoOptimals) then
+    exit(False);
+  Result := False;
+  for k := 0 to FParetoOptimals.Count - 1 do
+  begin
+    LCoord := FParetoOptimals[k];
+    if (LCoord.i = i) and (LCoord.j = j) then
+      exit(True);
+  end;
 end;
 
 procedure TFireflyView.Notify(AMsg: string);

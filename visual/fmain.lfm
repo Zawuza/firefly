@@ -33,6 +33,27 @@ object FireflyView: TFireflyView
       OnClick = Button1Click
       TabOrder = 0
     end
+    object SchrittText: TStaticText
+      Left = 216
+      Height = 32
+      Top = 8
+      Width = 96
+      Anchors = [akTop, akRight]
+      Caption = 'Schritte: 0'
+      Font.Height = -20
+      ParentFont = False
+      TabOrder = 1
+    end
+    object Button2: TButton
+      Left = 320
+      Height = 33
+      Top = 8
+      Width = 99
+      Anchors = [akTop, akRight]
+      Caption = 'Calc best'
+      OnClick = Button2Click
+      TabOrder = 2
+    end
   end
   object DrawGrid1: TDrawGrid
     Left = 16

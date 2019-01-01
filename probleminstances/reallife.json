@@ -1,0 +1,85 @@
+{
+    "m": 10,
+    "n": 10,
+    "anlagen": [
+        {
+            "typ": "atBahnhof",
+            "i": 0,
+            "j": 9
+        },
+        {
+            "typ": "atImbiss",
+            "i": 3,
+            "j": 4
+        },
+        {
+            "typ": "atImbiss",
+            "i": 8,
+            "j": 7
+        },
+        {
+            "typ": "atHaus",
+            "i": 0,
+            "j": 1
+        },
+        {
+            "typ": "atHaus",
+            "i": 0,
+            "j": 2
+        },
+        {
+            "typ": "atHaus",
+            "i": 1,
+            "j": 5
+        },
+        {
+            "typ": "atHaus",
+            "i": 1,
+            "j": 8
+        },
+        {
+            "typ": "atHaus",
+            "i": 2,
+            "j": 0
+        },
+        {
+            "typ": "atHaus",
+            "i": 2,
+            "j": 7
+        },
+        {
+            "typ": "atHaus",
+            "i": 4,
+            "j": 7
+        },
+        {
+            "typ": "atHaus",
+            "i": 5,
+            "j": 4
+        },
+        {
+            "typ": "atHaus",
+            "i": 6,
+            "j": 6
+        },
+        {
+            "typ": "atHaus",
+            "i": 8,
+            "j": 0
+        },
+        {
+            "typ": "atHaus",
+            "i": 8,
+            "j": 6
+        }
+    ],
+    "agenten": [
+        "Handwerker",
+        "Landschaftsarchitekt",
+        "Verkehrsspezialist",
+        "Werkstudent",
+        "Elektriker",
+        "Elektriker",
+        "Werkstudent"
+    ]
+}

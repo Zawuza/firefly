@@ -22,6 +22,14 @@ type
     procedure Notify(AMsg: string);
   end;
 
+  { TCoordinates }
+
+  TCoordinates = class
+    i, j: integer;
+  end;
+
+  TCoordinatesList = specialize TFPGObjectList<TCoordinates>;
+
   { TFireflyViewModel }
 
   TFireflyViewModel = class
@@ -35,6 +43,7 @@ type
     function GetM: integer;
     function GetN: integer;
     procedure Step;
+    function CalcParetoOptimum: TCoordinatesList;
     destructor Destroy; override;
   end;
 
@@ -75,7 +84,7 @@ begin
     end;
     Result.Add(LRow);
   end;
-  for i := 0 to FFirefly.Positionen.Count -1 do
+  for i := 0 to FFirefly.Positionen.Count - 1 do
   begin
     LAgentPosition := FFirefly.Positionen[i];
     Result[LAgentPosition.I][LAgentPosition.J] := FProblem.B[i].GetLabel;
@@ -96,6 +105,16 @@ procedure TFireflyViewModel.Step;
 begin
   FFirefly.Step;
   FView.Notify(MSG_PLEASE_UPDATE_GUI);
+end;
+
+function TFireflyViewModel.CalcParetoOptimum: TCoordinatesList;
+var LCoord: TCoordinates;
+begin
+  LCoord := TCoordinates.Create;
+  LCoord.i := 2;
+  LCoord.j := 2;
+  Result := TCoordinatesList.Create(true);
+  Result.Add(LCoord);
 end;
 
 destructor TFireflyViewModel.Destroy;

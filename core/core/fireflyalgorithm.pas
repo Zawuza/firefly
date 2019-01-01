@@ -58,11 +58,17 @@ var
   LPositionOfA, LPositionOfB: TAgentPosition;
   LBestMove: TNeighbours;
   LMinDistance: integer;
-  LDistance: integer;
+  LDistance, LStartDistance: integer;
 begin
-  LMinDistance := High(LMinDistance);
   LPositionOfA := FPositionen[AIndexOfA];
   LPositionOfB := FPositionen[AIndexOfB];
+
+  LStartDistance := ManhattanDistanz(LPositionOfA.I, LPositionOfA.J,
+    LPositionOfB.I, LPositionOfB.J);
+  if (LStartDistance = 0) and AStopOnMidDist then
+    exit;
+
+  LMinDistance := High(LMinDistance);
   //left
   if CheckBounds(LPositionOfA.I, LPositionOfA.J - 1) then
   begin
@@ -107,9 +113,6 @@ begin
       LBestMove := nBottom;
     end;
   end;
-
-  if (LMinDistance < 2) and AStopOnMidDist then
-    exit;
 
   //Movement
   case LBestMove of
