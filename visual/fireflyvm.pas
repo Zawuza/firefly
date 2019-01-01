@@ -10,7 +10,8 @@ uses
   fgl,
   baustellenproblem,
   jsonproblemparser,
-  fireflyalgorithm;
+  fireflyalgorithm,
+  paretocalc;
 
 type
 
@@ -108,13 +109,21 @@ begin
 end;
 
 function TFireflyViewModel.CalcParetoOptimum: TCoordinatesList;
-var LCoord: TCoordinates;
+var
+  LCoord: TCoordinates;
+  LParetoFront: TParetoFront;
+  k: integer;
 begin
-  LCoord := TCoordinates.Create;
-  LCoord.i := 2;
-  LCoord.j := 2;
-  Result := TCoordinatesList.Create(true);
-  Result.Add(LCoord);
+  Result := TCoordinatesList.Create(True);
+  LParetoFront := TParetoCalc.CalculateParetoFront(FProblem);
+  for k := 0 to LParetoFront.Count - 1 do
+  begin
+    LCoord := TCoordinates.Create;
+    LCoord.i := LParetoFront[k].i;
+    LCoord.j := LParetoFront[k].j;
+    Result.Add(LCoord);
+  end;
+  FreeAndNil(LParetoFront);
 end;
 
 destructor TFireflyViewModel.Destroy;
@@ -125,5 +134,4 @@ begin
 end;
 
 end.
-
 

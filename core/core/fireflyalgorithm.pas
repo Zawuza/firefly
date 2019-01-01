@@ -314,6 +314,7 @@ var
   i, j: integer;
   LSomeoneMovedUsingLight: boolean;
 begin
+  Randomize;
   if FStage2 < 5 then
   begin
     LSomeoneMovedUsingLight := False;

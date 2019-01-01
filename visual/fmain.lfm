@@ -34,10 +34,10 @@ object FireflyView: TFireflyView
       TabOrder = 0
     end
     object SchrittText: TStaticText
-      Left = 216
+      Left = 160
       Height = 32
-      Top = 8
-      Width = 96
+      Top = 9
+      Width = 120
       Anchors = [akTop, akRight]
       Caption = 'Schritte: 0'
       Font.Height = -20

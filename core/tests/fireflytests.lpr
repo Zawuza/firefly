@@ -3,13 +3,9 @@ program fireflytests;
 {$mode objfpc}{$H+}
 
 uses
-  Interfaces,
-  Forms,
-  GuiTestRunner,
-  baustellenproblem,
-  jsonproblemparser,
-  jsonproblemparsertestcase,
-  baustellenprobelmtestcase, fireflyalgorithm, fireflyalgorithmtestcase;
+  Interfaces, Forms, GuiTestRunner, baustellenproblem, jsonproblemparser,
+  jsonproblemparsertestcase, baustellenprobelmtestcase, fireflyalgorithm,
+  fireflyalgorithmtestcase, paretocalctestcase, paretocalc, logger;
 
 {$R *.res}
 

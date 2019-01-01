@@ -1,0 +1,22 @@
+{
+    "m":3,
+    "n":3,
+    "anlagen":
+        [
+            {
+                "typ":"atBahnhof",
+                "i":0,
+                "j":1
+            },
+            {
+                "typ":"atImbiss",
+                "i":2,
+                "j":1
+            }
+        ],
+    "agenten":
+    [
+        "Handwerker",
+        "Verkehrsspezialist"
+    ]
+}
