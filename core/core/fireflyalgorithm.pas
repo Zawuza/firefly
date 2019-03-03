@@ -29,7 +29,7 @@ type
 
   TFireflyAlgorithm = class
   private
-    FStage2: integer;
+    FBestSolution: TAgentPosition;
     FProblem: TBaustellenProblem;
     FPositionen: TPositionList;
     function MoveAToB(AIndexOfA: integer; AIndexOfB: integer;
@@ -40,10 +40,12 @@ type
     procedure MoveAllCloser;
     function CheckBounds(i, j: integer): boolean;
     function ManhattanDistanz(i1, j1, i2, j2: integer): integer;
+    procedure UpdateBestSolution;
   public
     constructor Create(AProblem: TBaustellenProblem); overload;
     constructor Create(AProblem: TBaustellenProblem; APositionen: TPositionList);
     property Positionen: TPositionList read FPositionen;
+    property BestSolution: TAgentPosition read FBestSolution;
     procedure Step;
     destructor Destroy; override;
   end;
@@ -60,7 +62,7 @@ var
   LMinDistance: integer;
   LDistance, LStartDistance: integer;
 begin
-  Result := false;
+  Result := False;
   LPositionOfA := FPositionen[AIndexOfA];
   LPositionOfB := FPositionen[AIndexOfB];
 
@@ -150,7 +152,7 @@ begin
       LPositionOfA.J := LPositionOfA.J;
     end;
   end;
-  Result := true;
+  Result := True;
 end;
 
 procedure TFireflyAlgorithm.MoveRandomly(AIndex: integer);
@@ -294,6 +296,47 @@ begin
   Result := abs(i1 - i2) + abs(j1 - j2);
 end;
 
+procedure TFireflyAlgorithm.UpdateBestSolution;
+var
+  i, j, k: integer;
+  LUtilities: array of double;
+  LScores: array of integer;
+  LAgent: IAgent;
+  LMax: integer;
+begin
+  //Initialize utility array
+  SetLength(LUtilities, FPositionen.Count);
+
+  //Initialize Borda score
+  SetLength(LScores, FPositionen.Count);
+  for i := 0 to Length(LScores) - 1 do
+    LScores[i] := 0;
+
+  for i := 0 to FProblem.B.Count - 1 do
+  begin
+    //Each agent
+    LAgent := FProblem.B[i];
+    //computes utilities for each known position
+    for j := 0 to FPositionen.Count - 1 do
+      LUtilities[j] := LAgent.t(FProblem.F, FPositionen[j].I, FPositionen[j].J);
+    //and adds Borda score to score of each position
+    for j := 0 to Length(LUtilities) - 1 do
+      for k := 0 to Length(LUtilities) - 1 do
+        if LUtilities[j] < LUtilities[k] then
+          Inc(LScores[j]);
+  end;
+
+  //Max Borda score computing
+  LMax := 0;
+  for i := 1 to Length(LScores) - 1 do
+  begin
+    if LScores[i] > LScores[LMax] then
+      LMax := i;
+  end;
+  FBestSolution.I := FPositionen[LMax].I;
+  FBestSolution.J := FPositionen[LMax].J;
+end;
+
 constructor TFireflyAlgorithm.Create(AProblem: TBaustellenProblem);
 var
   LBaufirma: TBaufirma;
@@ -314,7 +357,8 @@ begin
     until CheckBounds(LPosition.I, LPosition.J);
     FPositionen.Add(LPosition);
   end;
-  FStage2 := 0;
+  FBestSolution := TAgentPosition.Create;
+  UpdateBestSolution;
 end;
 
 constructor TFireflyAlgorithm.Create(AProblem: TBaustellenProblem;
@@ -322,7 +366,8 @@ constructor TFireflyAlgorithm.Create(AProblem: TBaustellenProblem;
 begin
   FProblem := AProblem;
   FPositionen := APositionen;
-  FStage2 := 0;
+  FBestSolution := TAgentPosition.Create;
+  UpdateBestSolution;
 end;
 
 procedure TFireflyAlgorithm.Step;
@@ -350,6 +395,7 @@ begin
   if not LSomeoneMovedUsingLight then
     for i := 0 to FPositionen.Count - 1 do
       MoveRandomly(i);
+  UpdateBestSolution;
 end;
 
 destructor TFireflyAlgorithm.Destroy;

@@ -42,6 +42,7 @@ type
     FParetoOptimals: TCoordinatesList;
     procedure IncSchritteCount;
     function IsPareto(i, j: integer): boolean;
+    function IsSolution(i, j: integer): boolean;
   public
     procedure Notify(AMsg: string);
   end;
@@ -71,9 +72,15 @@ begin
   //Fill cell
   if (UpperCase(FGrid[aRow][aCol]) = FGrid[aRow][aCol]) or (FGrid[aRow][aCol] = '') then
     if IsPareto(aRow, aCol) then
-      DrawGrid1.Canvas.Brush.Color := clWhite
+      if IsSolution(aRow, aCol) then
+        DrawGrid1.Canvas.Brush.Color := clOlive
+      else
+        DrawGrid1.Canvas.Brush.Color := clWhite
     else
-      DrawGrid1.Canvas.Brush.Color := cl3DLight
+      if IsSolution(aRow, aCol) then
+        DrawGrid1.Canvas.Brush.Color := clYellow
+      else
+        DrawGrid1.Canvas.Brush.Color := cl3DLight
   else
     DrawGrid1.Canvas.Brush.Color := clSkyBlue;
   DrawGrid1.Canvas.FillRect(aRect);
@@ -131,6 +138,13 @@ begin
     if (LCoord.i = i) and (LCoord.j = j) then
       exit(True);
   end;
+end;
+
+function TFireflyView.IsSolution(i, j: integer): boolean;
+begin
+  Result := False;
+  if (i = FVM.GetBestSolutionI) and (j = FVM.GetBestSolutionJ) then
+    Result := True;
 end;
 
 procedure TFireflyView.Notify(AMsg: string);

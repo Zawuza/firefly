@@ -43,6 +43,8 @@ type
     function GetGrid: TListGrid;
     function GetM: integer;
     function GetN: integer;
+    function GetBestSolutionI: integer;
+    function GetBestSolutionJ: integer;
     procedure Step;
     function CalcParetoOptimum: TCoordinatesList;
     destructor Destroy; override;
@@ -100,6 +102,16 @@ end;
 function TFireflyViewModel.GetN: integer;
 begin
   Result := FProblem.F.n;
+end;
+
+function TFireflyViewModel.GetBestSolutionI: integer;
+begin
+  Result := FFirefly.BestSolution.I;
+end;
+
+function TFireflyViewModel.GetBestSolutionJ: integer;
+begin
+  Result := FFirefly.BestSolution.J;
 end;
 
 procedure TFireflyViewModel.Step;
